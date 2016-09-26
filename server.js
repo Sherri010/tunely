@@ -7,7 +7,8 @@ var app = express();
 
 // serve static files from public folder
 app.use(express.static(__dirname + '/public'));
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true}));
 /************
  * DATABASE *
  ************/
@@ -48,6 +49,23 @@ app.get('/api/albums', function album_index(req, res){
         res.json(list);
      })
     //res.json(albums)
+});
+
+app.post('/api/albums',function(req,res){
+  
+  var newalbum = new db.Album({
+   artistName: req.body.artistName,
+  name: req.body.albumName,
+  releaseDate: req.body.releaseDate,
+  genres: [req.body.genres]
+  });
+
+  console.log(newalbum);
+
+   newalbum.save(function(err,saved){
+    if(err){console.log(err)}
+      res.json(saved);
+   })
 })
 
 /**********

@@ -49,9 +49,23 @@ sampleAlbums.forEach(function(album){
     url:"/api/albums",
     data:[],
     success:function(data){
-      console.log(data);
+     // console.log(data);
+    }
+  });
+
+$('#albumForm').on('submit',function(e){
+  e.preventDefault();
+  console.log($('#albumForm').serialize());
+  $.ajax({
+    type:"POST",
+    url:"/api/albums",
+    data:$('#albumForm').serialize(),
+    success:function(data){
+      console.log("server siad: ",data);
+      renderAlbum(data);
     }
   })
+})
 
 
 });
@@ -62,12 +76,12 @@ sampleAlbums.forEach(function(album){
 
 // this function takes a single album and renders it to the page
 function renderAlbum(album) {
-  console.log('rendering album:', album);
-  var count = 1;
+  //console.log('rendering album:', album);
+  //var count = 1;
 
   var albumHtml =
   "        <!-- one album -->" +
-  "        <div class='row album' data-album-id='" + count + "'>" +
+  "        <div class='row album' data-album-id='" + album._id + "'>" +
   "          <div class='col-md-10 col-md-offset-1'>" +
   "            <div class='panel panel-default'>" +
   "              <div class='panel-body'>" +
@@ -90,6 +104,10 @@ function renderAlbum(album) {
   "                        <h4 class='inline-header'>Released date:</h4>" +
   "                        <span class='album-releaseDate'>" + album.releaseDate + "</span>" +
   "                      </li>" +
+   "                      <li class='list-group-item'>" +
+  "                        <h4 class='inline-header'>Genres:</h4>" +
+  "                        <span class='album-releaseDate'>" + album.genres + "</span>" +
+  "                      </li>" +
   "                    </ul>" +
   "                  </div>" +
   "                </div>" +
@@ -106,6 +124,6 @@ function renderAlbum(album) {
 
   // render to the page with jQuery
   $('#album-list').append(albumHtml);
-  count++;
+ // count++;
 
 }
