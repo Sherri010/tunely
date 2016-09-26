@@ -40,16 +40,18 @@ sampleAlbums.push({
 $(document).ready(function() {
   console.log('app.js loaded!');
 
-sampleAlbums.forEach(function(album){ 
-   renderAlbum(album);
-});
+// sampleAlbums.forEach(function(album){ 
+//    renderAlbum(album);
+// });
 
   $.ajax({
     type:"GET",
     url:"/api/albums",
     data:[],
     success:function(data){
-     // console.log(data);
+        data.forEach(function(album){ 
+        renderAlbum(album);
+    });
     }
   });
 
@@ -65,10 +67,19 @@ $('#albumForm').on('submit',function(e){
       renderAlbum(data);
     }
   })
-})
-
-
 });
+
+
+
+$('#albums').on('click', '.add-song', function(e) {
+    console.log('asdfasdfasdf');
+    var id= $(this).parents('.album').data('album-id'); // "5665ff1678209c64e51b4e7b"
+    console.log('id',id);
+    $('#songModal').data('album-id', id);
+    $('#songModal').modal();
+});
+});
+
 
 
 
@@ -106,8 +117,13 @@ function renderAlbum(album) {
   "                      </li>" +
    "                      <li class='list-group-item'>" +
   "                        <h4 class='inline-header'>Genres:</h4>" +
-  "                        <span class='album-releaseDate'>" + album.genres + "</span>" +
+  "                        <span class='album-genres'>" + album.genres + "</span>" +
   "                      </li>" +
+   "                      <li class='list-group-item'>" +
+  "                        <h4 class='inline-header'>Songs:</h4>" +
+  "                        <span class='album-songs'>" + buildSongHTML(album.songs) + "</span>" +
+  "                      </li>" +
+
   "                    </ul>" +
   "                  </div>" +
   "                </div>" +
@@ -116,6 +132,7 @@ function renderAlbum(album) {
   "              </div>" + // end of panel-body
 
   "              <div class='panel-footer'>" +
+ "                     <button class='btn btn-primary add-song'>Add Song</button>"+
   "              </div>" +
 
   "            </div>" +
@@ -127,3 +144,14 @@ function renderAlbum(album) {
  // count++;
 
 }
+
+
+function buildSongHTML(songs){
+  var songString = "";
+  songs.forEach(function(song){
+    songString+= "- ("+song.trackNumber+") "+song.name+" ";
+
+  });
+  return songString;
+}
+

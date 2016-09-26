@@ -66,7 +66,24 @@ app.post('/api/albums',function(req,res){
     if(err){console.log(err)}
       res.json(saved);
    })
-})
+});
+
+app.post('/api/songs',function(req,res){
+  console.log(req.body);
+  var newSong = new db.Song({
+      trackNumber: req.body.trackNumber,
+      name: req.body.songName
+  });
+
+  console.log(newSong);
+
+   newSong.save(function(err,saved){
+    if(err){console.log(err)}
+      res.json(saved);
+   });
+
+});
+
 
 /**********
  * SERVER *
