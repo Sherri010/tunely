@@ -33,6 +33,7 @@ $(document).ready(function() {
   $('#saveSong').on('click', handleNewSongSubmit);
   //delete album
   $('#albums').on('click','.delete-album' , handleDeleteAlbum);
+  $('#albums').on('click','.edit-album',handleEditAlbum);
  
 });
 
@@ -119,4 +120,28 @@ function handleDeleteAlbum(e){
       console.log(err);
     }
   });//ajax
+}
+
+
+
+function handleEditAlbum(e){
+  e.preventDefault();
+  
+   var id =  $(this).closest('.album').data('album-id');
+   var saveChanges = document.createElement('button');
+   saveChanges.textContent = 'Save Changes';
+   saveChanges.setAttribute('class','btn btn-primary save-changes');
+   $(this).parent().append(saveChanges);
+   $(this).toggle(false);
+   var url = "/api/albums/"+id;
+    $.get(url,function (album) {
+
+      var source = $('#album-update-form').html();
+      var updateform = Handlebars.compile(source);
+      var form  = updateform({album: [album]});
+      console.log(form);
+      $('[data-album-id='+id+']').find('ul').toggle();
+      $('[data-album-id='+id+']').find('.col-md-9').append(form);
+  });
+
 }

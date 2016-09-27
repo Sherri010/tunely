@@ -45,7 +45,7 @@ function destroy(req, res) {
 }
 
 function update(req, res) {
-  // FILL ME IN !
+  res.send('got it');
 }
 
 
