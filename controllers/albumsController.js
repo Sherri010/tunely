@@ -36,7 +36,12 @@ function show(req, res) {
 }
 
 function destroy(req, res) {
-  // FILL ME IN !
+   db.Album.findOneAndRemove({_id : req.params.id},function(err,removed){
+
+      if(err){console.log(err);}
+      res.json(removed);
+   });
+  
 }
 
 function update(req, res) {

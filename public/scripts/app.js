@@ -31,6 +31,9 @@ $(document).ready(function() {
 
   // save song modal save button
   $('#saveSong').on('click', handleNewSongSubmit);
+  //delete album
+  $('#albums').on('click','.delete-album' , handleDeleteAlbum);
+ 
 });
 
 
@@ -88,4 +91,32 @@ function handleNewSongSubmit(e) {
   }).error(function(err) {
     console.log('post to /api/albums/:albumId/songs resulted in error', err);
   });
+}
+
+
+function handleDeleteAlbum(e){
+  e.preventDefault();
+
+  var id =  $(this).closest('.album').data('album-id');
+  var urldelete = "/api/albums/"+id;
+    console.log(id);
+  $.ajax({
+    method:'DELETE',
+    url: urldelete,
+    data:[],
+    success: function(data){
+      console.log(data);
+      var scriptHandleBar = $('#album-template');
+      $('#albums').html(scriptHandleBar);
+     $.get('/api/albums',function (albums) {
+     albums.forEach(function(album) {
+      console.log(album)
+      renderAlbum(album);
+    });//foreach
+   });//get
+    },
+    error: function(err){
+      console.log(err);
+    }
+  });//ajax
 }
