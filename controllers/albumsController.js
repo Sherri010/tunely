@@ -45,7 +45,23 @@ function destroy(req, res) {
 }
 
 function update(req, res) {
-  res.send('got it');
+  var id = req.params.id;
+
+  db.Album.findOne({_id:id},function(err,found){
+    if(err) throw err;
+
+    found.name = req.body.name || found.name;
+    found.artistName = req.body.name || found.artistName;
+    found.releaseDate = req.body.releaseDate || found.releaseDate;
+    found.genres = req.body.genres.split(',').map(function(item) { return item.trim(); } ) || found.genres;
+
+    found.save();
+    res.json(found);
+
+ 
+  });
+
+
 }
 
 
