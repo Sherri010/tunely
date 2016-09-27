@@ -77,11 +77,27 @@ $('#albums').on('click', '.add-song', function(e) {
     console.log('id',id);
     $('#songModal').data('album-id', id);
     $('#songModal').modal();
+
+   $('#saveSong').on('click',handleNewSongSubmit);
 });
 });
 
 
+function handleNewSongSubmit(e){
+  e.preventDefault();
+  var id = $('#songModal').data('album-id');
+  var newSongUrl ="http://localhost:3000/api/albums/"+id+"/songs";
 
+
+$.ajax({
+  method:"POST",
+  url:newSongUrl,
+  data:{name:$('#songName').val(),trackNumber:$('#trackNumber').val()},
+  success:function(data){
+   console.log(data);
+  }
+});
+}
 
 
 

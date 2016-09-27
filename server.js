@@ -42,6 +42,8 @@ app.get('/api', function api_index (req, res){
   });
 });
 
+
+
 app.get('/api/albums', function album_index(req, res){
      console.log('hitting api/albums');
      db.Album.find({},function(err,list){
@@ -68,9 +70,20 @@ app.post('/api/albums',function(req,res){
    })
 });
 
+
+app.post('/api/albums/:id/songs',function(req,res){
+var id = req.params.id;
+  db.Album.findByIdAndUpdate(id,{$push:{songs:req.body}},function(err,found){
+    if(err){console.log(err);}
+    res.json(found); 
+  });   
+
+});
+
+
 app.post('/api/songs',function(req,res){
-  console.log(req.body);
-  var newSong = new db.Song({
+      console.log(req.body);
+      var newSong = new db.Song({
       trackNumber: req.body.trackNumber,
       name: req.body.songName
   });
