@@ -34,6 +34,7 @@ $(document).ready(function() {
   //delete album
   $('#albums').on('click','.delete-album' , handleDeleteAlbum);
   $('#albums').on('click','.edit-album',handleEditAlbum);
+  $('#albums').on('click','.save-changes',handleUpdateAlbum);
  
 });
 
@@ -144,4 +145,21 @@ function handleEditAlbum(e){
       $('[data-album-id='+id+']').find('.col-md-9').append(form);
   });
 
+}
+
+
+function handleUpdateAlbum(e){
+  e.preventDefault();
+  var updatedurl = '/api/albums/'+ $(this).closest('.album').data('album-id');
+   var formdata = $(this).closest('.album').find('form').serialize();
+
+  console.log(formdata);
+  $.ajax({
+    method:"PUT",
+    url:updatedurl,
+    data: formdata,
+    success: function(data){
+      console.log(data);
+    }
+  })
 }
