@@ -5,11 +5,11 @@
  *
  */
 
-
 $(document).ready(function() {
   console.log('app.js loaded!');
-  $.get('/api/albums').success(function (albums) {
-    albums.forEach(function(album) {
+  $.get('/api/albums',function (albums) {
+     albums.forEach(function(album) {
+      console.log(album)
       renderAlbum(album);
     });
   });
